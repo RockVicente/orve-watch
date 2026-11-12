@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>Orve Watch | Poedagar Luxury Sport</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Parisienne&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/main.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="header-group header-left" aria-label="Navegação principal">
+            <button class="text-link menu-toggle" type="button" aria-expanded="false" aria-controls="menu-panel">
+                <span class="menu-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span>menu</span>
+            </button>
+            <button class="text-link search-toggle" type="button" aria-expanded="false" aria-controls="search-panel">
+                <span class="search-icon" aria-hidden="true"></span>
+                <span>search</span>
+            </button>
+        </nav>
+
+        <a class="wordmark" href="#inicio" aria-label="Orve Watch, início">Orve Watch</a>
+
+        <nav class="header-group header-right" aria-label="Conta e sacola">
+            <a class="text-link account-link" href="#sobre">my Orve</a>
+            <button class="bag-button" type="button" aria-label="Sacola, 0 itens">
+                <span class="bag-icon" aria-hidden="true"></span>
+                <span class="bag-count" aria-live="polite">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <div class="utility-panel menu-panel" id="menu-panel" hidden>
+        <a href="#produto">Relógios</a>
+        <a href="#sobre">A marca Orve</a>
+        <a href="#boutique">Encontre uma boutique</a>
+    </div>
+    <form class="utility-panel search-panel" id="search-panel" role="search" hidden>
+        <label for="site-search">O que você está procurando?</label>
+        <div class="search-field">
+            <input id="site-search" name="q" type="search" placeholder="Buscar produtos">
+            <button type="submit">Buscar</button>
+        </div>
+    </form>
+
+    <main id="inicio">
+        <section class="product-layout" id="produto" aria-label="Produto">
+            <div class="product-visual" role="img" aria-label="Relógio Poedagar prateado com mostrador verde esmeralda"></div>
+
+            <section class="product-info" aria-labelledby="product-title">
+                <div class="product-copy">
+                    <p class="reference">Ref. CRVCH21442NXM</p>
+                    <h1 id="product-title">Poedagar Luxury Sport</h1>
+                    <p class="price">R$ 319,99</p>
+
+                    <div class="product-options">
+                        <p class="option-label">Colour</p>
+                        <button class="color-option" type="button" aria-label="Verde esmeralda, selecionado" aria-pressed="true">
+                            <span class="color-swatch" aria-hidden="true"></span>
+                            <span>Verde esmeralda</span>
+                        </button>
+                        <p class="size-note">Find your size (saved: 42)</p>
+                    </div>
+
+                    <button class="buy-button" type="button">Adquira Agora</button>
+                    <p class="cart-feedback" role="status" aria-live="polite"></p>
+
+                    <div class="product-links">
+                        <a id="sobre" href="#sobre">About Poedagar</a>
+                        <a id="boutique" href="#boutique">Find in boutique</a>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+</body>
+</html>
