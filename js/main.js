@@ -15,7 +15,8 @@ function updateHeaderCount() {
     const count = getCart().reduce((total, item) => total + item.quantity, 0);
     document.querySelector(".bag-count").textContent = String(count);
     bagButton.setAttribute("aria-label", `Abrir sacola, ${count} ${count === 1 ? "item" : "itens"}`);
-    document.querySelector(".drawer-count").textContent = `(${count})`;
+    const drawerCount = document.querySelector(".drawer-count");
+    if (drawerCount) drawerCount.textContent = `(${count})`;
 }
 
 function togglePanel(button, panel, otherButton, otherPanel) {
@@ -29,6 +30,11 @@ function togglePanel(button, panel, otherButton, otherPanel) {
 function renderCart() {
     const cart = getCart();
     const items = document.querySelector(".cart-items");
+    if (!items) {
+        updateHeaderCount();
+        return;
+    }
+
     items.replaceChildren();
     let subtotal = 0;
 
@@ -101,7 +107,7 @@ document.querySelector(".color-option").addEventListener("click", (event) => {
     selectedVariant = event.currentTarget.dataset.variant;
     event.currentTarget.setAttribute("aria-pressed", "true");
 });
-document.querySelector(".add-button").addEventListener("click", addProduct);
+document.querySelector(".buy-button").addEventListener("click", addProduct);
 document.querySelectorAll(".acquire-button").forEach((button) => button.addEventListener("click", () => {
     addProduct();
     renderCart();
@@ -111,7 +117,8 @@ bagButton.addEventListener("click", () => {
     renderCart();
     cartDialog.showModal();
 });
-document.querySelector(".checkout-button").addEventListener("click", () => {
+const checkoutButton = document.querySelector(".checkout-button");
+if (checkoutButton) checkoutButton.addEventListener("click", () => {
     cartDialog.close();
     renderCheckoutSummary();
     checkoutDialog.showModal();
@@ -122,7 +129,8 @@ document.querySelectorAll("[data-close]").forEach((button) => button.addEventLis
 document.querySelectorAll("dialog").forEach((dialog) => dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
 }));
-document.querySelector(".checkout-form").addEventListener("submit", (event) => {
+const checkoutForm = document.querySelector(".checkout-form");
+if (checkoutForm) checkoutForm.addEventListener("submit", (event) => {
     event.preventDefault();
     document.querySelector(".checkout-status").textContent = "Checkout ainda não integrado: seus dados não foram enviados, nenhum pedido foi criado e nenhum pagamento foi processado.";
 });
