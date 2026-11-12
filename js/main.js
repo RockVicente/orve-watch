@@ -7,7 +7,6 @@ const menuPanel = document.querySelector(".menu-panel");
 const searchPanel = document.querySelector(".search-panel");
 const bagButton = document.querySelector(".bag-button");
 const cartDialog = document.querySelector("#cart-dialog");
-const checkoutDialog = document.querySelector("#checkout-dialog");
 const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 let selectedVariant = "Verde esmeralda";
 
@@ -56,25 +55,6 @@ function renderCart() {
     document.querySelector(".cart-summary").hidden = cart.length === 0;
     document.querySelector(".subtotal").textContent = money.format(subtotal);
     updateHeaderCount();
-    renderCheckoutSummary();
-}
-
-function renderCheckoutSummary() {
-    const cart = getCart();
-    const summary = document.querySelector(".checkout-items");
-    summary.replaceChildren();
-    let subtotal = 0;
-    for (const item of cart) {
-        subtotal += PRODUCT.price * item.quantity;
-        const row = document.createElement("div");
-        row.className = "checkout-item";
-        row.textContent = `${PRODUCT.name} · ${item.variant} × ${item.quantity}`;
-        const price = document.createElement("span");
-        price.textContent = money.format(PRODUCT.price * item.quantity);
-        row.append(price);
-        summary.append(row);
-    }
-    document.querySelector(".checkout-subtotal").textContent = money.format(subtotal);
 }
 
 function changeQuantity(variant, change) {
@@ -87,6 +67,48 @@ function addProduct() {
     addToCart(selectedVariant);
     renderCart();
     document.querySelector(".cart-feedback").textContent = "Adicionado à sua sacola.";
+}
+
+async function startCheckout() {
+    const cart = getCart();
+    const status = document.querySelector(".checkout-status");
+    const button = document.querySelector(".checkout-button");
+
+    if (cart.length === 0) {
+        status.textContent = "Adicione um produto à sacola antes de confirmar.";
+        return;
+    }
+
+    button.disabled = true;
+    status.textContent = "Preparando o pagamento...";
+
+    try {
+        const response = await fetch("/api/checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ items: cart })
+        });
+        let result;
+        try {
+            result = await response.json();
+        } catch {
+            throw new Error("O servidor retornou uma resposta inválida.");
+        }
+
+        if (!response.ok) {
+            throw new Error(result.error || "Não foi possível iniciar o pagamento.");
+        }
+
+        const checkoutUrl = new URL(result.checkoutUrl);
+        if (checkoutUrl.protocol !== "https:" || !/(^|\.)mercadopago\.com(\.[a-z]{2})?$/.test(checkoutUrl.hostname)) {
+            throw new Error("O servidor retornou um endereço de pagamento inválido.");
+        }
+
+        window.location.assign(checkoutUrl.href);
+    } catch (error) {
+        status.textContent = error instanceof Error ? error.message : "Não foi possível iniciar o pagamento.";
+        button.disabled = false;
+    }
 }
 
 menuToggle.addEventListener("click", () => togglePanel(menuToggle, menuPanel, searchToggle, searchPanel));
@@ -108,32 +130,17 @@ document.querySelector(".color-option").addEventListener("click", (event) => {
     event.currentTarget.setAttribute("aria-pressed", "true");
 });
 document.querySelector(".buy-button").addEventListener("click", addProduct);
-document.querySelectorAll(".acquire-button").forEach((button) => button.addEventListener("click", () => {
-    addProduct();
-    renderCart();
-    checkoutDialog.showModal();
-}));
 bagButton.addEventListener("click", () => {
     renderCart();
     cartDialog.showModal();
 });
-const checkoutButton = document.querySelector(".checkout-button");
-if (checkoutButton) checkoutButton.addEventListener("click", () => {
-    cartDialog.close();
-    renderCheckoutSummary();
-    checkoutDialog.showModal();
-});
+document.querySelector(".checkout-button").addEventListener("click", startCheckout);
 document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", () => {
     document.querySelector(`#${button.dataset.close}`).close();
 }));
 document.querySelectorAll("dialog").forEach((dialog) => dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
 }));
-const checkoutForm = document.querySelector(".checkout-form");
-if (checkoutForm) checkoutForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    document.querySelector(".checkout-status").textContent = "Checkout ainda não integrado: seus dados não foram enviados, nenhum pedido foi criado e nenhum pagamento foi processado.";
-});
 document.querySelectorAll(".menu-panel a").forEach((link) => link.addEventListener("click", () => {
     menuPanel.hidden = true;
     menuToggle.setAttribute("aria-expanded", "false");

@@ -78,5 +78,22 @@
             </section>
         </section>
     </main>
+
+    <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+        <div class="cart-dialog-header">
+            <h2 id="cart-title">Sua sacola <span class="drawer-count"></span></h2>
+            <button class="dialog-close" type="button" data-close="cart-dialog" aria-label="Fechar sacola">&times;</button>
+        </div>
+        <div class="cart-items"></div>
+        <p class="empty-cart">Sua sacola está vazia.</p>
+        <div class="cart-summary" hidden>
+            <div class="cart-total">
+                <span>Subtotal</span>
+                <strong class="subtotal"></strong>
+            </div>
+            <p class="checkout-status" role="status" aria-live="polite"></p>
+            <button class="checkout-button buy-button" type="button">Confirmar</button>
+        </div>
+    </dialog>
 </body>
 </html>

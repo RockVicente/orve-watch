@@ -341,6 +341,107 @@ main {
     font-size: 12px;
 }
 
+.cart-dialog {
+    width: min(480px, calc(100% - 32px));
+    max-height: min(80vh, 640px);
+    padding: 24px;
+    border: 1px solid #e8e8e8;
+    color: #171717;
+}
+
+.cart-dialog::backdrop {
+    background: rgb(0 0 0 / 42%);
+}
+
+.cart-dialog-header,
+.cart-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart-dialog-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.dialog-close {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 28px;
+    line-height: 1;
+}
+
+.cart-items {
+    display: grid;
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.cart-item img {
+    width: 64px;
+    height: 72px;
+    object-fit: contain;
+}
+
+.cart-item h3,
+.cart-item p {
+    margin: 0 0 6px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-control button,
+.remove-item {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+}
+
+.empty-cart {
+    color: #666;
+    font-size: 13px;
+}
+
+.cart-summary {
+    border-top: 1px solid #ddd;
+    padding-top: 16px;
+}
+
+.cart-total {
+    font-size: 14px;
+}
+
+.checkout-status {
+    min-height: 18px;
+    color: #9a2c20;
+    font-size: 12px;
+}
+
+.checkout-button {
+    font-size: 15px;
+}
+
+.checkout-button:disabled {
+    cursor: wait;
+    opacity: .6;
+}
+
 :focus-visible {
     outline: 2px solid #276343;
     outline-offset: 4px;
